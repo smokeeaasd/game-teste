@@ -7,6 +7,12 @@ import Coords from './game/coords.js';
 
 $(() => {
 	const game = new Game();
-	const player = new Player(game.Map, (new Coords(0, 550)));
+
+	const player = new Player(
+		game.Map,
+		new Coords(0, 550),
+		"#07B4F5"
+	);
+
 	keyHandler.execute(player);
 });
