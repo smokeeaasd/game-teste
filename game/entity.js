@@ -1,7 +1,15 @@
 import "../libs/jquery.js";
 import Coords from "./coords.js";
+import Size from "./size.js";
 
 class Entity {
+
+	/** @type {HTMLCanvasElement} */
+	map;
+
+	/** @type {Size} */
+	size;
+
 	/** @type {Coords} */
 	position;
 
@@ -16,15 +24,20 @@ class Entity {
 
 		this.entity.fillStyle = this.color;
 
-		this.entity.fillRect(x, y, 50, 50);
+		this.entity.fillRect(x, y, this.size.width, this.size.height);
 	}
 
 	/**
 	 * @param {HTMLCanvasElement} map 
 	 * @param {Coords} position
 	 * @param {String} color
+	 * @param {Size} size
 	 */
-	constructor(map, position, color) {
+	constructor(map, position, color, size) {
+		this.map = map;
+
+		this.size = size;
+
 		this.color = color;
 
 		this.entity = map.getContext("2d");
@@ -37,9 +50,9 @@ class Entity {
 	get #positions() {
 		return {
 			inLeftEdge: this.position.x == 0,
-			inRightEdge: this.position.x == 950,
+			inRightEdge: this.position.x == this.map.width - this.size.width,
 			inTopEdge: this.position.y == 0,
-			inBottomEdge: this.position.y == 550
+			inBottomEdge: this.position.y == this.map.height - this.size.height
 		}
 	}
 
@@ -58,7 +71,7 @@ class Entity {
 		if (y > 0 && this.#positions.inBottomEdge)
 			return;
 
-		this.entity.clearRect(this.position.x, this.position.y, 50, 50);
+		this.entity.clearRect(this.position.x, this.position.y, this.size.width, this.size.height);
 
 		this.position.x += x;
 		this.position.y += y;
